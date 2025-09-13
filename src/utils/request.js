@@ -5,7 +5,23 @@ import { ElMessage } from "element-plus"
 // 导入 router
 import router from "@/router"
 
-const baseURL = 'http://192.168.1.47:8080'
+// 动态确定baseURL
+const getBaseURL = () => {
+  // 优先使用环境变量中的API URL
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL
+  }
+  // 判断当前环境
+  if (import.meta.env.DEV) {
+    // 开发环境 - 使用本地地址
+    return 'http://localhost:8080'
+  } else {
+    // 生产环境 - 使用服务器IP地址
+    return 'http://192.168.1.47:8080'
+  }
+}
+
+const baseURL = getBaseURL()
 
 const instance = axios.create({
   // TODO 1. 基础地址，超时时间

@@ -1,0 +1,17 @@
+# Netlify配置文件
+
+[build]
+  publish = "dist"
+  command = "npm run build"
+
+# 生产环境变量
+[context.production.environment]
+  VITE_API_URL = "http://192.168.1.47:8080"
+
+# 开发环境变量
+[context.branch-deploy.environment]
+  VITE_API_URL = "http://192.168.1.47:8080"
+
+# 部署预览环境变量
+[context.deploy-preview.environment]
+  VITE_API_URL = "http://192.168.1.47:8080"
