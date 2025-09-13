@@ -36,6 +36,13 @@ instance.interceptors.request.use(
     if(userStore.token) {
       config.headers.Authorization = userStore.token
     }
+
+    // 添加ngrok所需的请求头，绕过浏览器警告页面
+    if (baseURL.includes('ngrok')) {
+      config.headers['Ngrok-Skip-Browser-Warning'] = 'true'
+      config.headers['User-Agent'] = 'Mozilla/5.0'
+    }
+
     return config
   },
   (err) => Promise.reject(err)
