@@ -5,7 +5,7 @@ import { ElMessage } from "element-plus"
 // 导入 router
 import router from "@/router"
 
-const baseURL = 'http://localhost:8080'
+const baseURL = 'http://192.168.1.47:8080'
 
 const instance = axios.create({
   // TODO 1. 基础地址，超时时间
