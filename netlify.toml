@@ -6,12 +6,12 @@
 
 # 生产环境变量
 [context.production.environment]
-  VITE_API_URL = "http://192.168.1.47:8080"
+  VITE_API_URL = "https://96317f1de546.ngrok-free.app"
 
 # 开发环境变量
 [context.branch-deploy.environment]
-  VITE_API_URL = "http://192.168.1.47:8080"
+  VITE_API_URL = "https://96317f1de546.ngrok-free.app"
 
 # 部署预览环境变量
 [context.deploy-preview.environment]
-  VITE_API_URL = "http://192.168.1.47:8080"
+  VITE_API_URL = "https://96317f1de546.ngrok-free.app"
