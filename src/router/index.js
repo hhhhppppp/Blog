@@ -13,7 +13,7 @@ const router = createRouter({
     {
       path: '/',
       redirect: '/home'
-    },wenji
+    },
     // 首页（公开访问）
     {
       path: '/home',
