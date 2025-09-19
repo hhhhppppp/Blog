@@ -17,7 +17,7 @@ const router = createRouter({
     // 首页（公开访问）
     {
       path: '/home',
-      component: () => import('@/views/Home/HomePage.vue') // 修改这里：home -> Home
+      component: () => import('@/views/Home/HomePage.vue')
     },
     // 后台管理界面（需要登录）
     {
