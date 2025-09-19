@@ -1,49 +1,41 @@
+<!-- src/views/layout/LayoutContainer.vue -->
 <script setup>
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores'
 import {
-  Management,
-  Promotion,
-  UserFilled,
   User,
   Crop,
   EditPen,
   SwitchButton,
-  CaretBottom
+  HomeFilled,
+  Document,
+  Menu
 } from '@element-plus/icons-vue'
-import avatar from '@/assets/default.png'
 
-import { useUserStore } from '@/stores'
-import { onMounted } from 'vue'
-
-import router from '@/router'
-import { ElMessageBox } from 'element-plus'
-
-
-// 获取用户信息用于渲染
-// 1、组件渲染完毕获取用户数据
-// 2、使用 userStore 
-onMounted(() => {
-  userStore.getUser()
-})
 const userStore = useUserStore()
+const router = useRouter()
 
-// 处理 用户 下拉框的功能
-// 1、退出功能
-// 2、切换页面功能
-const handleCommand = async (key) => {
-  if (key === 'logout') {
-    // 退出操作
-    // 清除本地数据
-    await ElMessageBox.confirm('你确认退出吗？', '温馨提示', {
-      type: 'Warning',
-      confirmButtonText: 'OK',
-      cancelButtonText: 'No'
-    })
-    userStore.removeToken()
-    userStore.setUser({})
-    router.push('/login')
-  } else {
-    router.push(`/user/${key}`)
+const handleCommand = (command) => {
+  switch (command) {
+    case 'profile':
+      router.push('/admin/user/profile')
+      break
+    case 'avatar':
+      router.push('/admin/user/avatar')
+      break
+    case 'password':
+      router.push('/admin/user/password')
+      break
+    case 'logout':
+      userStore.removeToken()
+      router.push('/home')
+      break
   }
+}
+
+// 添加返回首页的方法
+const goHome = () => {
+  router.push('/home')
 }
 </script>
 
@@ -52,34 +44,44 @@ const handleCommand = async (key) => {
     <el-aside width="200px">
       <div class="el-aside__logo"></div>
       <el-menu
-        active-text-color="#ffd04b"
-        background-color="#fff"
         :default-active="$route.path"
-        text-color="#000"
+        active-text-color="#ffd04b"
+        background-color="#545c64"
+        text-color="#fff"
         router
       >
-        <el-menu-item index="/article/channel">
-          <el-icon><Management /></el-icon>
-          <span>文章分类</span>
+        <el-menu-item index="/home" @click="goHome">
+          <el-icon><HomeFilled /></el-icon>
+          <span>博客首页</span>
         </el-menu-item>
-        <el-menu-item index="/article/manage">
-          <el-icon><Promotion /></el-icon>
-          <span>文章管理</span>
-        </el-menu-item>
+        <el-sub-menu index="blog">
+          <template #title>
+            <el-icon><Document /></el-icon>
+            <span>博客管理</span>
+          </template>
+          <el-menu-item index="/admin/article/manage">
+            <el-icon><EditPen /></el-icon>
+            <span>文章管理</span>
+          </el-menu-item>
+          <el-menu-item index="/admin/article/channel">
+            <el-icon><Menu /></el-icon>
+            <span>分类管理</span>
+          </el-menu-item>
+        </el-sub-menu>
         <el-sub-menu index="/user">
           <template #title>
-            <el-icon><UserFilled /></el-icon>
+            <el-icon><User /></el-icon>
             <span>个人中心</span>
           </template>
-          <el-menu-item index="/user/profile">
+          <el-menu-item index="/admin/user/profile">
             <el-icon><User /></el-icon>
             <span>基本资料</span>
           </el-menu-item>
-          <el-menu-item index="/user/avatar">
+          <el-menu-item index="/admin/user/avatar">
             <el-icon><Crop /></el-icon>
             <span>更换头像</span>
           </el-menu-item>
-          <el-menu-item index="/user/password">
+          <el-menu-item index="/admin/user/password">
             <el-icon><EditPen /></el-icon>
             <span>重置密码</span>
           </el-menu-item>
@@ -91,7 +93,7 @@ const handleCommand = async (key) => {
         <div>你好：<strong>{{ userStore.user.username }}</strong></div>
         <el-dropdown placement="bottom-end" @command="handleCommand">
           <span class="el-dropdown__box">
-            <el-avatar :src="userStore.user.userPic || avatar" />
+            <el-avatar :src="userStore.user.userPic" />
             <el-icon><CaretBottom /></el-icon>
           </span>
           <!-- 折叠的下拉部分 -->
@@ -125,7 +127,7 @@ const handleCommand = async (key) => {
 .layout-container {
   height: 100vh;
   .el-aside {
-    background-color: #fff;
+    background-color: #545c64;
     &__logo {
       height: 150px;
       width: 100%;
@@ -136,8 +138,6 @@ const handleCommand = async (key) => {
     }
   }
   .el-header {
-    // 
-    // margin-left: 3px;
     background-color: #fff;
     display: flex;
     align-items: center;

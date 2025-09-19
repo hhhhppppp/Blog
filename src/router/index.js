@@ -1,36 +1,74 @@
+// src/router/index.js
 import { useUserStore } from '@/stores'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/login', component: () => import('@/views/login/LoginPage.vue') },
-    { 
-      path: '/',
-      component: () => import('@/views/layout/LayoutContainer.vue'),
-      redirect: '/article/manage',
-      children: [
-        // 异步组件， （路由懒加载）
-        { path: '/article/manage', component: () => import('@/views/article/ArticleManage.vue') },
-        { path: '/article/channel', component: () => import('@/views/article/ArticleChannel.vue') },
-        { path: '/user/profile', component: () => import('@/views/user/UserProfile.vue') },
-        { path: '/user/avatar', component: () => import('@/views/user/UserAvatar.vue') },
-        { path: '/user/password', component: () => import('@/views/user/UserPassword.vue') }
-      ]
+    {
+      path: '/login',
+      component: () => import('@/views/login/LoginPage.vue'),
+      meta: { hideLayout: true } // 登录页不显示布局
     },
+    {
+      path: '/',
+      redirect: '/home'
+    },
+    // 首页（公开访问）
+    {
+      path: '/home',
+      component: () => import('@/views/home/HomePage.vue')
+    },
+    // 后台管理界面（需要登录）
+    {
+      path: '/admin',
+      component: () => import('@/views/layout/LayoutContainer.vue'),
+      redirect: '/admin/article/manage',
+      children: [
+        {
+          path: '/admin/article/manage',
+          component: () => import('@/views/article/ArticleManage.vue')
+        },
+        {
+          path: '/admin/article/channel',
+          component: () => import('@/views/article/ArticleChannel.vue')
+        },
+        {
+          path: '/admin/user/profile',
+          component: () => import('@/views/user/UserProfile.vue')
+        },
+        {
+          path: '/admin/user/avatar',
+          component: () => import('@/views/user/UserAvatar.vue')
+        },
+        {
+          path: '/admin/user/password',
+          component: () => import('@/views/user/UserPassword.vue')
+        }
+      ]
+    }
   ],
 })
 
-// 登录访问拦截 => 默认直接放行
-// 根据返回值决定 是否放行还是拦截
-// 返回值：
-// 1、undefined / true  直接放行
-// 2、false 拦回 from 的地址页面
-// 3、具体路径 或者 路径对象 拦截到对应的地址
-//  '/login'  { name: 'login'}
-router.beforeEach((to) => {
-  // 如果 没有token 且访问的时非登录页，拦截到登录页
+// 登录访问拦截
+router.beforeEach((to, from, next) => {
   const userStore = useUserStore()
-  if (!userStore.token && to.path !== '/login') return '/login'
+
+  // 公开页面，直接放行
+  const publicPages = ['/home', '/login']
+  if (publicPages.includes(to.path)) {
+    next()
+    return
+  }
+
+  // 如果没有token，跳转到登录页
+  if (!userStore.token) {
+    next('/login')
+    return
+  }
+
+  // 已登录用户可以访问所有页面
+  next()
 })
+
 export default router
