@@ -28,7 +28,7 @@ const emit = defineEmits(['success'])
 const onUploadFile = (uploadFile) => {
   // console.log(uploadFile)
   imgUrl.value = URL.createObjectURL(uploadFile.raw) //预览图片
-  formModel.value.coverImg = uploadFile.raw 
+  formModel.value.coverImg = uploadFile.raw
 }
 
 const onPublish = async (state) => {
@@ -68,7 +68,7 @@ const open = async (row) => {
   await nextTick()
 
   if (row.id) {
-    // console.log('编辑回显') 
+    // console.log('编辑回显')
     const res = await articleGetDetailService(row.id)
     formModel.value = res.data.data
     // 图片需要单独处理回显
@@ -77,7 +77,7 @@ const open = async (row) => {
     // // 网络图片转成 file 对象，需要转换
     // formModel.value.coverImg = await imageUrlToFile(imgUrl.value, formModel.value.coverImg)
   } else {
-    formModel.value = { ...defaultFrom } //基于默认的数据重置表单
+    formModel.value = { ...defaultFrom.value } //基于默认的数据重置表单
     // 这里重置了表单的数据，但是图片上传 img 地址，富文本编辑器内容 =》 需要手动重置
     imgUrl.value = ''
     editorRef.value.setHTML('')

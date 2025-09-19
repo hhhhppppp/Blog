@@ -36,21 +36,11 @@ instance.interceptors.request.use(
     if(userStore.token) {
       config.headers.Authorization = userStore.token
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> 070bbb46f778d0c39af61a47cf164aaab96eb240
     // 添加ngrok所需的请求头，绕过浏览器警告页面
     if (baseURL.includes('ngrok')) {
       config.headers['Ngrok-Skip-Browser-Warning'] = 'true'
       config.headers['User-Agent'] = 'Mozilla/5.0'
     }
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> 070bbb46f778d0c39af61a47cf164aaab96eb240
     return config
   },
   (err) => Promise.reject(err)
