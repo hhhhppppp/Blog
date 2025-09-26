@@ -86,9 +86,9 @@ const login = async () => {
 
         // 根据角色跳转页面
         if (userStore.user.role === 'admin') {
-          router.push('/')
+          router.push('/admin/article/manage')
         } else {
-          router.push('/home')
+          router.push('/admin/user/profile') // 普通用户跳转到个人中心
         }
 
         ElMessage.success('登录成功')

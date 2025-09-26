@@ -7,9 +7,14 @@ import '@/assets/main.scss'
 import 'element-plus/theme-chalk/el-message-box.css'
 import 'element-plus/theme-chalk/el-message.css'
 
+import permission from "@/directives/permission.js";
+
 const app = createApp(App)
 
 app.use(router)
 app.use(pinia)
+
+app.directive('role', permission.role)
+app.directive('permission', permission.permission)
 
 app.mount('#app')

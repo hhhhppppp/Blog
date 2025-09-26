@@ -14,3 +14,4 @@ export default pinia
 
 export * from './modules/user' // 接收 user 模块的所有的按需导出
 export * from './modules/counter'
+export * from './modules/auth.js'

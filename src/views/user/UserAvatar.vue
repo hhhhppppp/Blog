@@ -7,13 +7,13 @@ import { ElMessage } from 'element-plus'
 
 const userStore = useUserStore()
 const uploadRef = ref()
-const imgUrl = ref(userStore.user.user_pic)
+const imgUrl = ref(userStore.user.userPic)
 const imageFile = ref(null) // 添加文件引用
 
 const onUploadFile = (uploadFile) => {
   // 保存文件对象
   imageFile.value = uploadFile.raw
-  
+
   // 预览图片
   const reader = new FileReader()
   reader.readAsDataURL(uploadFile.raw)
@@ -36,7 +36,7 @@ const onUpdateAvatar = async () => {
     await userUploadAvatarService(formData)
     await userStore.getUser()
     ElMessage({ type: 'success', message: '更换头像成功' })
-    
+
     // 清空文件引用
     imageFile.value = null
   } catch (error) {
